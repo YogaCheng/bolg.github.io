@@ -15,7 +15,7 @@
 <meta property="og:site_name" content="Yoga&#39;s Blog">
 <meta property="og:description" content="自定义 SpringApplicationSpringApplicationSpringApplication Spring Boot 驱动 Spring 应用上下文的引导类 12345678@SpringBootConfiguration@EnableAutoConfiguration@ComponentScan(excludeFilters = &amp;#123;		@Filter(type = F">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-12-29T08:40:57.408Z">
+<meta property="og:updated_time" content="2018-12-29T09:10:03.132Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SpringBoot源码学习(一)">
 <meta name="twitter:description" content="自定义 SpringApplicationSpringApplicationSpringApplication Spring Boot 驱动 Spring 应用上下文的引导类 12345678@SpringBootConfiguration@EnableAutoConfiguration@ComponentScan(excludeFilters = &amp;#123;		@Filter(type = F">
@@ -307,9 +307,6 @@
 <li>Spring 应用上下文（<code>ApplicationContext）</code>生命周期控制 注解驱动 Bean </li>
 <li>Spring 事件/监听（<code>ApplicationEventMulticaster</code>）机制加载或者初始化组件</li>
 </ul>
-<p>q1：webApplicationType分为三种都有什么实用地方</p>
-<p> q2：框架底层的事件是单线程么？业务实现是否可以使用事件去实现？如果使用事件实现会不会是不是会有性能问题？ </p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SimpleApplicationEventMulticaster</span> <span class="keyword">extends</span> <span class="title">AbstractApplicationEventMulticaster</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Nullable</span></span><br><span class="line">	<span class="keyword">private</span> Executor taskExecutor;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
       
 

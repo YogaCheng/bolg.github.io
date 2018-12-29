@@ -8,17 +8,17 @@
   <link rel="dns-prefetch" href="http://yoursite.com">
   <title>SpringBoot源码学习(一) | Yoga&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="主要内容自定义 SpringApplicationSpringApplicationSpringApplication Spring Boot 驱动 Spring 应用上下文的引导类 12345678@SpringBootConfiguration@EnableAutoConfiguration@ComponentScan(excludeFilters = &amp;#123;		@Filter(type">
+  <meta name="description" content="自定义 SpringApplicationSpringApplicationSpringApplication Spring Boot 驱动 Spring 应用上下文的引导类 12345678@SpringBootConfiguration@EnableAutoConfiguration@ComponentScan(excludeFilters = &amp;#123;		@Filter(type = F">
 <meta property="og:type" content="article">
 <meta property="og:title" content="SpringBoot源码学习(一)">
 <meta property="og:url" content="http://yoursite.com/2018/12/29/SpringBoot(一)/index.html">
 <meta property="og:site_name" content="Yoga&#39;s Blog">
-<meta property="og:description" content="主要内容自定义 SpringApplicationSpringApplicationSpringApplication Spring Boot 驱动 Spring 应用上下文的引导类 12345678@SpringBootConfiguration@EnableAutoConfiguration@ComponentScan(excludeFilters = &amp;#123;		@Filter(type">
+<meta property="og:description" content="自定义 SpringApplicationSpringApplicationSpringApplication Spring Boot 驱动 Spring 应用上下文的引导类 12345678@SpringBootConfiguration@EnableAutoConfiguration@ComponentScan(excludeFilters = &amp;#123;		@Filter(type = F">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-12-29T08:38:40.770Z">
+<meta property="og:updated_time" content="2018-12-29T08:40:57.408Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SpringBoot源码学习(一)">
-<meta name="twitter:description" content="主要内容自定义 SpringApplicationSpringApplicationSpringApplication Spring Boot 驱动 Spring 应用上下文的引导类 12345678@SpringBootConfiguration@EnableAutoConfiguration@ComponentScan(excludeFilters = &amp;#123;		@Filter(type">
+<meta name="twitter:description" content="自定义 SpringApplicationSpringApplicationSpringApplication Spring Boot 驱动 Spring 应用上下文的引导类 12345678@SpringBootConfiguration@EnableAutoConfiguration@ComponentScan(excludeFilters = &amp;#123;		@Filter(type = F">
   
     <link rel="alternative" href="/atom.xml" title="Yoga&#39;s Blog" type="application/atom+xml">
   
@@ -152,8 +152,9 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="主要内容"><a href="#主要内容" class="headerlink" title="主要内容"></a>主要内容</h2><h3 id="自定义-SpringApplication"><a href="#自定义-SpringApplication" class="headerlink" title="自定义 SpringApplication"></a>自定义 SpringApplication</h3><h4 id="SpringApplication"><a href="#SpringApplication" class="headerlink" title="SpringApplication"></a><code>SpringApplication</code></h4><p><code>SpringApplication</code> Spring Boot 驱动 Spring 应用上下文的引导类</p>
+        <h3 id="自定义-SpringApplication"><a href="#自定义-SpringApplication" class="headerlink" title="自定义 SpringApplication"></a>自定义 SpringApplication</h3><h4 id="SpringApplication"><a href="#SpringApplication" class="headerlink" title="SpringApplication"></a><code>SpringApplication</code></h4><p><code>SpringApplication</code> Spring Boot 驱动 Spring 应用上下文的引导类</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@SpringBootConfiguration</span></span><br><span class="line"><span class="meta">@EnableAutoConfiguration</span></span><br><span class="line"><span class="meta">@ComponentScan</span>(excludeFilters = &#123;</span><br><span class="line">		<span class="meta">@Filter</span>(type = FilterType.CUSTOM, classes = TypeExcludeFilter.class),</span><br><span class="line">		<span class="meta">@Filter</span>(type = FilterType.CUSTOM, classes = AutoConfigurationExcludeFilter.class) &#125;)</span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> SpringBootApplication &#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
 <p><code>@ComponentScan</code>: 它是版本引入的？ Spring Framework 3.1</p>
 <p><code>@EnableAutoConfiguration</code>: 激活自动装配 <code>@Enable</code> -&gt; <code>@Enable</code> 开头的</p>
 <ul>

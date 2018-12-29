@@ -6,15 +6,29 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Archives | Yoga&#39;s Blog</title>
+  <title>Spring Boot的自动配置原理 | Yoga&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Yoga&#39;s Blog">
-<meta property="og:url" content="http://yoursite.com/archives/index.html">
+  <meta name="description" content="Spring Boot 程序入口有@SpringBootApplication 注解。  进入@SpringBootApplication 注解可以看到他的定义：">
+<meta name="keywords" content="Spring Boot">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring Boot的自动配置原理">
+<meta property="og:url" content="http://yoursite.com/2018/12/29/Spring Boot的自动配置原理/index.html">
 <meta property="og:site_name" content="Yoga&#39;s Blog">
+<meta property="og:description" content="Spring Boot 程序入口有@SpringBootApplication 注解。  进入@SpringBootApplication 注解可以看到他的定义：">
 <meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/5611237-4844fa5bb54ece28.png">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/5611237-fc413977107cb8af.png">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/5611237-62076df773dddf28.png">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/5611237-2b88fce7e49936be.png">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/5611237-2cc1ff65274e79f5.png">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/5611237-2b2d1682107f8ae0.png">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/5611237-72a9e12a2d4c9df3.png">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/5611237-be04b0e81d8acbe1.png">
+<meta property="og:updated_time" content="2018-12-29T09:52:51.072Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Yoga&#39;s Blog">
+<meta name="twitter:title" content="Spring Boot的自动配置原理">
+<meta name="twitter:description" content="Spring Boot 程序入口有@SpringBootApplication 注解。  进入@SpringBootApplication 注解可以看到他的定义：">
+<meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/5611237-4844fa5bb54ece28.png">
   
     <link rel="alternative" href="/atom.xml" title="Yoga&#39;s Blog" type="application/atom+xml">
   
@@ -128,36 +142,106 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
+            <article id="post-Spring Boot的自动配置原理" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
   
+    <h1 class="article-title" itemprop="name">
+      Spring Boot的自动配置原理
+    </h1>
   
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2018" class="archive-year">2018</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/12/29/Spring Boot的自动配置原理/" class="archive-article-date">
+
+        
+        <a href="/2018/12/29/Spring Boot的自动配置原理/" class="archive-article-date">
   	<time datetime="2018-12-29T10:22:16.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-12-29</time>
 </a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/12/29/Spring Boot的自动配置原理/">Spring Boot的自动配置原理</a>
-    </h1>
-  
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Spring Boot 程序入口有<code>@SpringBootApplication</code> 注解。</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/5611237-4844fa5bb54ece28.png" alt="cmd-markdown-logo"></p>
+<p>进入<code>@SpringBootApplication</code> 注解可以看到他的定义：<br><img src="https://upload-images.jianshu.io/upload_images/5611237-fc413977107cb8af.png" alt="cmd-markdown-logo"></p>
+<a id="more"></a>
+<p>Spring Boot程序的入口会加载主配置类，并且通过@EnableAutoConfiguration 开启自动配置的功能。该注解会引入EnableAutoConfigurationImportSelector类。该类又会继承AutoConfigurationImportSelector类</p>
+<blockquote>
+<p>EnableAutoConfigurationImportSelector</p>
+</blockquote>
+<p><img src="https://upload-images.jianshu.io/upload_images/5611237-62076df773dddf28.png" alt="cmd-markdown-logo"></p>
+<blockquote>
+<p>AutoConfigurationImportSelector</p>
+</blockquote>
+<p>AutoConfigurationImportSelector中方法selectImports的源码如下：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/5611237-2b88fce7e49936be.png" alt="cmd-markdown-logo"></p>
+<p>该方法会去获取所有自动配置类的名称。</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/5611237-2cc1ff65274e79f5.png" alt="cmd-markdown-logo"></p>
+<blockquote>
+<p>SpringFactoriesLoader</p>
+</blockquote>
+<p>SpringFactoriesLoader类中给的<code>loadFactoryNames</code>的源码如下</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/5611237-2b2d1682107f8ae0.png" alt="cmd-markdown-logo"></p>
+<p>其中FACTORIES_RESOURCE_LOCATION的值如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String FACTORIES_RESOURCE_LOCATION = <span class="string">"META-INF/spring.factories"</span>;</span><br></pre></td></tr></table></figure>
+<p>  可以看到该方法会扫描jar包路径下的<code>META-INF/spring.factories</code> 文件，把扫描到的这些文件内容包装成properties对象。再从<code>properties</code>中获取到<code>EnableAutoConfiguration.class</code>类（类名）对应的值，并且把他们添加到容器中。我们打开<code>spring.factories</code>文件</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/5611237-72a9e12a2d4c9df3.png" alt="cmd-markdown-logo"></p>
+<p>看到的非常多的xxxxAutoConfiguration类，这些类都是容器中的一个组件，加入到容器中，用他们做自动配置。</p>
+<p><strong>HttpEncodingAutoConfiguration</strong></p>
+<p>在这么多xxxxAutoConfiguration中，我们以<code>HttpEncodingAutoConfiguration</code>（Http自动编码）为例</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span>    </span><br><span class="line"><span class="comment">//表示这是一个配置类，以前编写的配置文件一样，也可以给容器中添加组件</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@EnableConfigurationProperties</span>(HttpEncodingProperties.class)</span><br><span class="line"><span class="comment">//启动指定类的ConfigurationProperties功能；将配置文件中对应的值和HttpEncodingProperties绑定起来；并把HttpEncodingProperties加入到ioc容器中</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@ConditionalOnWebApplication</span></span><br><span class="line"><span class="comment">//Spring底层@Conditional注解（Spring注解版），根据不同的条件，如果满足指定的条件，整个配置类里面的配置就会生效；这里是判断当前应用是否是web应用，如果是，当前配置类生效</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@ConditionalOnClass</span>(CharacterEncodingFilter.class)</span><br><span class="line"><span class="comment">//判断当前项目有没有这个类CharacterEncodingFilter；SpringMVC中进行乱码解决的过滤器；</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@ConditionalOnProperty</span>(prefix = <span class="string">"spring.http.encoding"</span>, value = <span class="string">"enabled"</span>, matchIfMissing = <span class="keyword">true</span>)</span><br><span class="line"><span class="comment">//判断配置文件中是否存在某个配置 spring.http.encoding.enabled；如果不存在，判断也是成立的</span></span><br><span class="line"><span class="comment">//即使我们配置文件中不配置pring.http.encoding.enabled=true，也是默认生效的；</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HttpEncodingAutoConfiguration</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//他已经和SpringBoot的配置文件映射了</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> HttpEncodingProperties properties;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//只有一个有参构造器的情况下，参数的值就会从容器中拿</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">HttpEncodingAutoConfiguration</span><span class="params">(HttpEncodingProperties properties)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.properties = properties;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="comment">//给容器中添加一个组件，这个组件的某些值需要从properties中获取</span></span><br><span class="line">    <span class="meta">@ConditionalOnMissingBean</span>(CharacterEncodingFilter.class)</span><br><span class="line">    <span class="comment">//判断容器没有这个组件</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> CharacterEncodingFilter <span class="title">characterEncodingFilter</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        CharacterEncodingFilter filter = <span class="keyword">new</span> OrderedCharacterEncodingFilter();</span><br><span class="line">        filter.setEncoding(<span class="keyword">this</span>.properties.getCharset().name());</span><br><span class="line">        filter.setForceRequestEncoding(<span class="keyword">this</span>.properties.shouldForce(Type.REQUEST));</span><br><span class="line">        filter.setForceResponseEncoding(<span class="keyword">this</span>.properties.shouldForce(Type.RESPONSE));</span><br><span class="line">        <span class="keyword">return</span> filter;</span><br><span class="line">    &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    .......</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>通过上面的类的注解可以看到，通过使用<code>@EnableConfigurationProperties</code>，可以把配置文件中的属性与<code>HttpEncodingProperties</code>类绑定起来并且加入到IOC容器中，进入<code>HttpEncodingProperties</code>类，可以看到他是通过<code>@ConfigurationProperties</code> 注解把配置文件中的<code>spring.http.encoding</code>值与该类的属性绑定起来的。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@ConfigurationProperties</span>(prefix = <span class="string">"spring.http.encoding"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HttpEncodingProperties</span></span></span><br></pre></td></tr></table></figure>
+<p>同时我们可以注意到上面的类中使用了<code>@ConditionalOnClass</code>与<code>@ConditionalOnWebApplication</code>注解，这两个都是<code>@Conditional</code>的派生注解，作用是必须是<code>@Conditional</code>指定的条件成立，才给容器中添加组件，配置里的内容才会生效。</p>
+<p><strong>Conditional注解</strong></p>
+<p>下面我们以<code>@ConditionalOnClass</code>为例，来分析一下他的源代码。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Conditional</span>(OnClassCondition.class)</span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> ConditionalOnClass &#123;</span><br></pre></td></tr></table></figure>
+<p>进入<code>OnClassCondition</code>类，查看他的类继承信息，可以看到他继承<code>SpringBootCondition类</code>，<code>SpringBootCondition</code>又实现了<code>Condition</code>接口</p>
+<p><code>OnClassCondition</code>又override了<code>SpringBootCondition</code>的<code>getMatchOutcome</code>方法，该方法会返回条件匹配结果。<br><code>getMatchOutcome</code>方法源代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> ConditionOutcome <span class="title">getMatchOutcome</span><span class="params">(ConditionContext context,</span></span></span><br><span class="line"><span class="function"><span class="params">         .....</span></span></span><br><span class="line"><span class="function"><span class="params">List&lt;String&gt; missing = getMatches(onClasses, MatchType.MISSING, classLoader)</span></span>;</span><br><span class="line">       ......</span><br><span class="line">List&lt;String&gt; present = getMatches(onMissingClasses, MatchType.PRESENT,</span><br><span class="line">                    classLoader);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到<code>getMatchOutcome</code>中主要调用了<code>getMatches</code>方法<br>进入<code>getMatches</code>方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> List&lt;String&gt; <span class="title">getMatches</span><span class="params">(Collection&lt;String&gt; candidates, MatchType matchType,</span></span></span><br><span class="line"><span class="function"><span class="params">            ClassLoader classLoader)</span> </span>&#123;</span><br><span class="line">        List&lt;String&gt; matches = <span class="keyword">new</span> ArrayList&lt;String&gt;(candidates.size());</span><br><span class="line">        <span class="keyword">for</span> (String candidate : candidates) &#123;</span><br><span class="line">            <span class="keyword">if</span> (matchType.matches(candidate, classLoader)) &#123;</span><br><span class="line">                matches.add(candidate);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> matches;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p><code>getMatches</code>又调用了<code>MatchType</code>的<code>matches</code>方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">enum</span> MatchType &#123;</span><br><span class="line"></span><br><span class="line">        PRESENT &#123;</span><br><span class="line"></span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">matches</span><span class="params">(String className, ClassLoader classLoader)</span> </span>&#123;</span><br><span class="line">                <span class="keyword">return</span> isPresent(className, classLoader);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        &#125;,</span><br><span class="line"></span><br><span class="line">        MISSING &#123;</span><br><span class="line"></span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">matches</span><span class="params">(String className, ClassLoader classLoader)</span> </span>&#123;</span><br><span class="line">                <span class="keyword">return</span> !isPresent(className, classLoader);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        &#125;;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">boolean</span> <span class="title">isPresent</span><span class="params">(String className, ClassLoader classLoader)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">if</span> (classLoader == <span class="keyword">null</span>) &#123;</span><br><span class="line">                classLoader = ClassUtils.getDefaultClassLoader();</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                forName(className, classLoader);</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">catch</span> (Throwable ex) &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">static</span> Class&lt;?&gt; forName(String className, ClassLoader classLoader)</span><br><span class="line">                <span class="keyword">throws</span> ClassNotFoundException &#123;</span><br><span class="line">            <span class="keyword">if</span> (classLoader != <span class="keyword">null</span>) &#123;</span><br><span class="line">                <span class="keyword">return</span> classLoader.loadClass(className);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> Class.forName(className);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">boolean</span> <span class="title">matches</span><span class="params">(String className, ClassLoader classLoader)</span></span>;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>进入<code>MatchType</code>类中，可以看到他有两个枚举类，进一步看枚举类中的<code>matches</code>的源代码可以发现最终是利用<code>loadClas</code>s以及<code>forName</code> 方法，判断类路径下有没有这个指定的类。<br>下面列举出的是<code>Spring Boot</code>对<code>@Conditional</code>的扩展注解。</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/5611237-be04b0e81d8acbe1.png" alt="cmd-markdown-logo"></p>
+<p><strong>总结</strong></p>
+<ol>
+<li>SpringBoot启动会加载大量的自动配置类</li>
+<li>我们看我们需要的功能有没有SpringBoot默认写好的自动配置类</li>
+<li>我们再来看这个自动配置类中到底配置了哪些组件；（只要我们要用的组件有，我们就不需要再来配置了）</li>
+<li>给容器中自动配置类添加组件的时候，会从properties类中获取某些属性。我们就可以在配置文件中指定这<br>些属性的值</li>
+</ol>
 
-        <div class="article-info info-on-right">
-          
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
@@ -169,111 +253,106 @@
 		</ul>
 	</div>
 
-          
+      
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2018/12/29/Spring Boot的自动配置原理/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/12/29/SpringBoot(一)/" class="archive-article-date">
-  	<time datetime="2018-12-29T08:38:11.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-12-29</time>
-</a>
+<nav id="article-nav">
+  
+  
+    <a href="/2018/12/29/SpringBoot(一)/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">SpringBoot源码学习(一)</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
+        
+        
+    </div>
+</aside>
+
+
+
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/12/29/SpringBoot(一)/">SpringBoot源码学习(一)</a>
-    </h1>
+  
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Spring Boot</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/09/04/设计模式学习–单例模式/" class="archive-article-date">
-  	<time datetime="2018-09-04T07:17:11.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-09-04</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/09/04/设计模式学习–单例模式/">设计模式学习--单例模式</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/09/04/在CentOS7下安装Mongodb/" class="archive-article-date">
-  	<time datetime="2018-09-04T06:21:23.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-09-04</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/09/04/在CentOS7下安装Mongodb/">在CentOS7下安装Mongodb</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
   
-  
-    </div></section>
-  
-
-    
 
 
           </div>
@@ -296,8 +375,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,

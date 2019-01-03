@@ -1,178 +1,114 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <!-- Html Head Tag-->
+  <head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="YogaCheng">
+  <!-- Open Graph Data -->
+  <meta property="og:title" content="设计模式学习--单例模式"/>
+  <meta property="og:description" content="" />
+  <meta property="og:site_name" content="Yoga&#39;s Blog"/>
+  <meta property="og:type" content="article" />
+  <meta property="og:image" content="http://yoursite.com"/>
   
-  <title>设计模式学习--单例模式 | Yoga&#39;s Blog</title>
-  <meta name="description" content="A geeker blog." />
-  <meta name="keywords" content="hexo,theme,icer,ggice" />
-  <meta name="HandheldFriendly" content="True" />
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="单例模式 确保一个类只有一个实例，并提供一个全局访问点。在设计模式中，单例模式是最常见的一种模式。">
-<meta property="og:type" content="article">
-<meta property="og:title" content="设计模式学习--单例模式">
-<meta property="og:url" content="http://yoursite.com/2018/09/04/设计模式学习–单例模式/index.html">
-<meta property="og:site_name" content="Yoga&#39;s Blog">
-<meta property="og:description" content="单例模式 确保一个类只有一个实例，并提供一个全局访问点。在设计模式中，单例模式是最常见的一种模式。">
-<meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-09-04T07:22:45.078Z">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="设计模式学习--单例模式">
-<meta name="twitter:description" content="单例模式 确保一个类只有一个实例，并提供一个全局访问点。在设计模式中，单例模式是最常见的一种模式。">
+    <link rel="alternate" href="/atom.xml" title="Yoga&#39;s Blog" type="application/atom+xml">
   
   
+    <link rel="icon" href="/favicon.png">
   
-  <link rel='stylesheet' href='//cdnjs.xyz/libs/nprogress/0.2.0/nprogress.css'/>
-  <link rel="stylesheet" href="//cdnjs.xyz/libs/highlight/9.12.0/styles/github-gist.css">
-  <link rel="stylesheet" href="//at.alicdn.com/t/font_405585_yuudmyqpo3q.css">
-  <script src='//cdnjs.xyz/libs/nprogress/0.2.0/nprogress.js'></script>
-  <!-- <script>try{Typekit.load({ async: false });}catch(e){}</script> -->
-  <link rel="stylesheet" href="/style.css">
-  
-<!-- Google Analytics -->
-<script type="text/javascript">
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-  
-  ga('create', 'UA-93986029-1', 'auto');
-  ga('send', 'pageview');
-  
-</script>
-<!-- End Google Analytics -->
 
+  <!-- Site Title -->
+  <title>Yoga's Blog</title>
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <!-- Custom CSS -->
+  
+  <link rel="stylesheet" href="/css/style.light.css">
+
+  <!-- Google Analytics -->
+  
 
 </head>
 
-<body>
-  
-  <script>NProgress.start();</script>
-  
-  <div id="site-wrapper">
-    
-    <header class="header">
-  <div class="header-wrapper">
-    <a href="/">
-      <img src="/image/logo.jpg" class="logo"/>
-      <!-- <span class="site-desc">
-        
-      </span> -->
-    </a>
-    <div class="social-wrapper">
-      
-        
-          <a href="https://twitter.com/iggice" class="social twitter" target="_blank" rel="external">
-            <span class="iconfont icon-twitter"></span>
-          </a>
-          
-          <a href="https://github.com/ggice" class="social github" target="_blank" rel="external">
-            <span class="iconfont icon-github"></span>
-          </a>
-          
-          <a href="http://ggice.lofter.com/" class="social lofter" target="_blank" rel="external">
-            <span class="iconfont icon-lofter"></span>
-          </a>
-          
-          <a href="https://dribbble.com/ggice" class="social dribbble" target="_blank" rel="external">
-            <span class="iconfont icon-dribbble"></span>
-          </a>
-          
-          <a href="mailto:i@ice.gs" class="social email" target="_blank" rel="external">
-            <span class="iconfont icon-email"></span>
-          </a>
-          
-          <a href="/atom.xml" class="social rss" target="_blank" rel="external">
-            <span class="iconfont icon-rss"></span>
-          </a>
-          
-      
-      
-      <a href="#" class="social search-do" target="_blank" rel="external">
-        <span class="iconfont icon-search"></span>
-      </a>
+  <body>
+    <!-- Page Header -->
+
+
+<header class="site-header header-background" style="background-image: url(/img/default-banner-dark.jpg)">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="page-title with-background-image">
+          <p class="title">设计模式学习--单例模式</p>
+          <p class="subtitle"></p>
+        </div>
+        <div class="site-menu with-background-image">
+          <ul>
             
-      <!-- <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><input type="hidden" name="sitesearch" value="http://yoursite.com"></form> -->
-    </div>
-    <div class="search-wrap">
-      <div class="search-content animated fade-in">
-        <p class="search-input">
-          <span class="iconfont icon-search"></span>
-          <input tabindex="1">
-        </p>
-        <ul class="search-result">
+              <li>
+                <a href="/">
+                  
+                  Home
+                  
+                </a>
+              </li>
             
-              <div class="tags">
-                   <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring-Boot/">Spring Boot</a></li></ul>
-                </div>
+              <li>
+                <a href="/archives">
+                  
+                  Archives
+                  
+                </a>
+              </li>
             
-        </ul>
+              <li>
+                <a href="https://github.com/<your-github-username>">
+                  
+                  Github
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="mailto:<your-email-address>">
+                  
+                  Email
+                  
+                </a>
+              </li>
+            
+          </ul>
+        </div>
       </div>
     </div>
-    <nav class="header-nav">
-      
-        <a href="/" class="archives">
-          home
-        </a>
-        
-        <a href="/tags/web-development/" class="archives">
-          web development
-        </a>
-        
-        <a href="/tags/soft/" class="archives">
-          soft
-        </a>
-        
-        <a href="/tags/os/" class="archives">
-          os
-        </a>
-        
-        <a href="/archives" class="archives">
-          archives
-        </a>
-        
-        <a href="/README/" class="archives">
-          README
-        </a>
-        
-    </nav>
   </div>
 </header>
-    <script>NProgress.set(0.4);</script>
-    
-    <main id="main" role="main">
-      <article id="post-设计模式学习–单例模式"
-  class="post article white-box article-type-post animated fade-in-top"
-  itemscope itemprop="blogPost">
-  <section class="post-header article-header">
-    <h2 class="title">
-        <a href="/2018/09/04/设计模式学习–单例模式/">
-          设计模式学习--单例模式
-        </a>
-      </h2>
-      <div class="subtitle">
-          <time>
-            9月 4, 2018
-          </time>
+
+<article>
+  <div class="container typo">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-info text-muted">
           
-      </div>
-  </section>
-  <section class="ad">
-    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-      <!-- 728*90 -->
-      <ins class="adsbygoogle"
-          style="display:inline-block;width:728px;height:90px"
-          data-ad-client="ca-pub-4068035403937094"
-          data-ad-slot="1123542156"></ins>
-      <script>
-      (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
-  </section>
-  <section class="content">
-    <div class="article-entry" itemprop="articleBody">
-      <h2 id="单例模式"><a href="#单例模式" class="headerlink" title="单例模式"></a>单例模式</h2><blockquote>
+            <!-- Author -->
+            <span class="author info">By YogaCheng</span>
+          
+          <!-- Date -->
+          <span class="date-time info">On
+            <span class="date">2018-09-04</span>
+            <span class="time">10:05:03</span>
+          </span>
+          
+        </div>
+        <!-- Tags -->
+        
+        <!-- Post Main Content -->
+        <div class="post-content">
+          <h2 id="单例模式"><a href="#单例模式" class="headerlink" title="单例模式"></a>单例模式</h2><blockquote>
 <p>确保一个类只有一个实例，并提供一个全局访问点。<br>在设计模式中，单例模式是最常见的一种模式。</p>
 </blockquote>
 <a id="more"></a>
@@ -183,64 +119,42 @@
 <h3 id="注册式单例"><a href="#注册式单例" class="headerlink" title="注册式单例"></a>注册式单例</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> * <span class="doctag">@todo</span> Spring中的做法，就是用这种注册式单例</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> Yoga</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@data</span> 2018年9月4日</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BeanFactory</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="title">BeanFactory</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 通过ConcurrentHashMap线程安全</span></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> Map&lt;String, Object&gt; ioc = <span class="keyword">new</span> ConcurrentHashMap&lt;String, Object&gt;();</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 采用synchronized保证方法线程安全</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">synchronized</span> Object <span class="title">getBean</span><span class="params">(String className)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> (!ioc.containsKey(className)) &#123;</span><br><span class="line">			Object obj = <span class="keyword">null</span>;</span><br><span class="line">			<span class="keyword">try</span> &#123;</span><br><span class="line">				obj = Class.forName(className).newInstance();</span><br><span class="line">				ioc.put(className, obj);</span><br><span class="line">			&#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">				e.printStackTrace();</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">return</span> obj;</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="keyword">return</span> ioc.get(className);</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h3 id="序列化反序列化"><a href="#序列化反序列化" class="headerlink" title="序列化反序列化"></a>序列化反序列化</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> * <span class="doctag">@todo</span> 序列化就是说把内存中的状态通过转换成字节码的形式 </span></span><br><span class="line"><span class="comment"> *       从而转换一个IO流，写入到其他地方(可以是磁盘、网络IO)</span></span><br><span class="line"><span class="comment"> *       内存中状态给永久保存下来了</span></span><br><span class="line"><span class="comment"> *       </span></span><br><span class="line"><span class="comment"> *       反序列化 //讲已经持久化的字节码内容，转换为IO流 </span></span><br><span class="line"><span class="comment"> *       通过IO流的读取，进而将读取的内容转换为Java对象</span></span><br><span class="line"><span class="comment"> *       在转换过程中会重新创建对象new</span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> Yoga</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@data</span> 2018年9月4日</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Seriable</span> <span class="keyword">implements</span> <span class="title">Serializable</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="title">Seriable</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Seriable seriable = <span class="keyword">new</span> Seriable();</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Seriable <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> seriable;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 依靠此方法，使得保证只有一个实例，解决反序列化对单例的破坏</span></span><br><span class="line"><span class="comment">	 * </span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">private</span> Object <span class="title">readResolve</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> seriable;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-    </div>
-  </section>
-
-  
-  
-</article>
-      <script>NProgress.set(0.6);</script>
-    </main>
-    
-    <footer class="footer">
-  <div class="footer-wrap">
-    <div class="footer-link">
-      
-      <h3>LINKS</h3>
-      <p>
-        
-          <a href="http://1x0.xyz/" target="_blank">Tian1x0</a>
-        
-          <a href="http://www.royalmice.com/hankzhou/" target="_blank">Hankzhou</a>
-        
-          <a href="http://sjydh.me/" target="_blank">设计有点货</a>
-        
-          <a href="https://developers.google.com/web/fundamentals/" target="_blank">Web fundamentals</a>
-        
-      </p>
-      
-    </div>
-    <div class="footer-tags">
-      
-        <h3>TAGS</h3>        
-        <div class="tags">
-             <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring-Boot/">Spring Boot</a></li></ul>
-          </div>
-      
-    </div>
-    <div class="footer-info">
-        <div>Theme <span class="codename"><a href="https://github.com/GGICE/hexo-icer" target="_blank">icer</a></span> designed & coded by <a href="https://ice.gs/" target="_blank">GGICE</a></div>
-        <div>Copyright &copy; 2019, <a href="/">Yoga&#39;s Blog</a>  . All rights reserved .</div>
+        </div>
       </div>
+    </div>
+  </div>
+</article>
+
+
+
+    <!-- Footer -->
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <p class="copyright text-muted">
+          Theme By <a target="_blank" href="https://github.com/levblanc">Levblanc.</a>
+          Inspired By <a target="_blank" href="https://github.com/klugjo/hexo-theme-clean-blog">Clean Blog.</a>
+        <p class="copyright text-muted">
+          Powered By <a target="_blank" href="https://hexo.io/">Hexo.</a>
+        </p>
+      </div>
+    </div>
   </div>
 </footer>
 
 
-    <script>NProgress.set(0.8);</script>
-    
-  </div>
+    <!-- After Footer Scripts -->
+<script src="/js/highlight.pack.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function(event) {
+    var codeBlocks = Array.prototype.slice.call(document.getElementsByTagName('pre'))
+    codeBlocks.forEach(function(block, index) {
+      hljs.highlightBlock(block);
+    });
+  });
+</script>
 
-  <script src="//cdnjs.xyz/libs/highlight/9.12.0/highlight.pack.js"></script>
-<script>hljs.initHighlightingOnLoad();</script>
-<script src="/js/main.js"></script>
-
-<!-- Commit -->
-
-
-
-  <script>
-    NProgress.done();
-  </script>
-  
-</body>
+  </body>
 </html>
+

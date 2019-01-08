@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+  <!-- Html Head Tag-->
+  <head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="YogaCheng">
+  <!-- Open Graph Data -->
+  <meta property="og:title" content="Zookeeper学习"/>
+  <meta property="og:description" content="" />
+  <meta property="og:site_name" content="Yoga&#39;s Blog"/>
+  <meta property="og:type" content="article" />
+  <meta property="og:image" content="http://yoursite.com"/>
+  
+    <link rel="alternate" href="/atom.xml" title="Yoga&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+
+  <!-- Site Title -->
+  <title>Yoga's Blog</title>
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <!-- Custom CSS -->
+  
+  <link rel="stylesheet" href="/css/style.light.css">
+
+  <!-- Google Analytics -->
+  
+
+</head>
+
+  <body>
+    <!-- Page Header -->
+
+
+<header class="site-header header-background" style="background-image: url(/img/default-banner-dark.jpg)">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="page-title with-background-image">
+          <p class="title">Zookeeper学习</p>
+          <p class="subtitle"></p>
+        </div>
+        <div class="site-menu with-background-image">
+          <ul>
+            
+              <li>
+                <a href="/">
+                  
+                  Home
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="/archives">
+                  
+                  Archives
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="https://github.com/<your-github-username>">
+                  
+                  Github
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="mailto:<your-email-address>">
+                  
+                  Email
+                  
+                </a>
+              </li>
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<article>
+  <div class="container typo">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-info text-muted">
+          
+            <!-- Author -->
+            <span class="author info">By YogaCheng</span>
+          
+          <!-- Date -->
+          <span class="date-time info">On
+            <span class="date">2019-01-08</span>
+            <span class="time">15:01:14</span>
+          </span>
+          
+        </div>
+        <!-- Tags -->
+        
+          <div class="post-tags text-muted">
+            Tags: 
+
+<a class="tag" href="/tags/Zookeeper/">#Zookeeper</a>
+
+
+          </div>
+        
+        <!-- Post Main Content -->
+        <div class="post-content">
+          <h1 id="zookeeper的ZAB协议"><a href="#zookeeper的ZAB协议" class="headerlink" title="zookeeper的ZAB协议"></a>zookeeper的ZAB协议</h1><p><strong>zookeeper依赖zab协议来实现分布式数据一致性</strong></p>
+<p>ZooKeeper为高可用的一致性协调框架，自然的ZooKeeper也有着一致性算法的实现，ZooKeeper使用的是ZAB协议作为数据一致性的算法， ZAB（ZooKeeper Atomic Broadcast ） 全称为：原子消息广播协议；<a id="more"></a>ZAB可以说是在Paxos算法基础上进行了扩展改造而来的，ZAB协议设计了支持崩溃恢复，ZooKeeper使用单一主进程Leader用于处理客户端所有事务请求，采用ZAB协议将服务器数状态以事务形式广播到所有Follower上；由于事务间可能存在着依赖关系，ZAB协议保证Leader广播的变更序列被顺序的处理，：一个状态被处理那么它所依赖的状态也已经提前被处理；ZAB协议支持的崩溃恢复可以保证在Leader进程崩溃的时候可以重新选出Leader并且保证数据的完整性;</p>
+<p><strong>简述</strong></p>
+<p>在ZooKeeper中所有的事务请求都由一个主服务器也就是Leader来处理，其他服务器为Follower，Leader将客户端的事务请求转换为事务Proposal，并且将Proposal分发给集群中其他所有的Follower，然后Leader等待Follwer反馈，当有 过半数（&gt;=N/2+1） 的Follower反馈信息后，Leader将再次向集群内Follower广播Commit信息，Commit为将之前的Proposal提交;</p>
+<p><strong>协议状态</strong></p>
+<p>ZAB协议中存在着三种状态，每个节点都属于以下三种中的一种：</p>
+<ul>
+<li><p><strong>Looking</strong> ：系统刚启动时或者Leader崩溃后正处于选举状态</p>
+</li>
+<li><p><strong>Following</strong> ：Follower节点所处的状态，Follower与Leader处于数据同步阶段；</p>
+</li>
+<li><p><strong>Leading</strong> ：Leader所处状态，当前集群中有一个Leader为主进程；</p>
+</li>
+</ul>
+<p>ZooKeeper启动时所有节点初始状态为Looking，这时集群会尝试选举出一个Leader节点，选举出的Leader节点切换为Leading状态；当节点发现集群中已经选举出Leader则该节点会切换到Following状态，然后和Leader节点保持同步；当Follower节点与Leader失去联系时Follower节点则会切换到Looking状态，开始新一轮选举；在ZooKeeper的整个生命周期中每个节点都会在Looking、Following、Leading状态间不断转换； </p>
+<p>##<strong>数据更新（事务请求）</strong></p>
+<p>客户端每发送一个更新请求，ZooKeeper都会生成一个全局唯一的递增编号，这个编号反映了所有事务操作的先后顺序，<br>这个唯一编号就是事务ID(ZXID)，只有更新请求才算是事务请求。<br>为保证按照事务的ZXID先后顺序来处理，Leader服务器会分别为每个Follower服务器创建一个队列，并将事务的先后顺序放入队列中，<br>并按照FIFO的策略进行消息发送。收到需要处理的事务后，Follower服务器会首先以及事务日志的形式写入服务器的磁盘中，写入成功后<br>会向Leader服务器发送ACK响应。当Leader服务器收到超过一半的Follower服务器的ACK响应后，会向所有Follower服务器广播Commit消息，<br>收到Commit消息的Follower服务器也会完成对事务的提交。<br>如果接收到事务请求的是Follower服务器，它会将请求转发给Leader服务器处理。</p>
+<p>##<strong>zookeeper 选举机制(崩溃恢复)</strong></p>
+<p><strong>ZXID</strong> ：ZAB协议中使用ZXID作为事务编号，ZXID为64位数字，低32位为一个递增的计数器，每一个客户端的一个事务请求时Leader产生新的事务后该计数器都会加1，高32位为Leader周期epoch编号，当新选举出一个Leader节点时Leader会取出本地日志中最大事务Proposal的ZXID解析出对应的epoch把该值加1作为新的epoch，将低32位从0开始生成新的ZXID；ZAB使用epoch来区分不同的Leader周期；</p>
+<p><strong>myID</strong> ： 又称为SID ，服务器ID 。一个数字,通过配置文件配置，唯一。</p>
+<p><strong>选举方式-初次选举</strong></p>
+<blockquote>
+<p>优先检查ZXID，ZXID较大者优先为Leader<br> 如果ZXID相同，检查SID，SID较大者优先为Leader</p>
+</blockquote>
+<p>以一个简单的例子来说明整个选举的过程.</p>
+<p>假设有五台服务器组成的zookeeper集群,它们的id从1-5,同时它们都是最新启动的,也就是没有历史数据,在存放数据量这一点上,都是一样的.假设这些服务器依序启动,来看看会发生什么.</p>
+<ul>
+<li><p>服务器1启动,此时只有它一台服务器启动了,它发出去的报没有任何响应,所以它的选举状态一直是LOOKING状态</p>
+</li>
+<li><p>服务器2启动,它与最开始启动的服务器1进行通信,互相交换自己的选举结果,由于两者都没有历史数据,所以id值较大的服务器2胜出,但是由于没有达到超过半数以上的服务器都同意选举它(这个例子中的半数以上是3),所以服务器1,2还是继续保持LOOKING状态.</p>
+</li>
+<li><p>服务器3启动,根据前面的理论分析,服务器3成为服务器1,2,3中的老大,而与上面不同的是,此时有三台服务器选举了它,所以它成为了这次选举的leader.</p>
+</li>
+<li><p>服务器4启动,根据前面的分析,理论上服务器4应该是服务器1,2,3,4中最大的,但是由于前面已经有半数以上的服务器选举了服务器3,所以它只能接收当小弟的命了.</p>
+</li>
+<li><p>服务器5启动,同4一样,当小弟.</p>
+</li>
+</ul>
+<blockquote>
+<p>正常情况下一旦选出一个Leader则一直会保持，除非Leader服务器宕掉☭，则再进行重新选举。</p>
+</blockquote>
+<p><strong>选举方式-运行时的投票</strong></p>
+<ul>
+<li>变更状态，当Leader宕机后，余下的所非Observer的服务器都会将自己的状态变更为Looking，然后开启新的Leader选举流程。</li>
+<li>每个服务器发出一个投票。生成(SID,ZXID)信息，注意运行期间的ZXID可能是不同的，但是在投票时都会将自己投为Leader，然后发送给其他的服务器。</li>
+<li>接收来自各个服务器的投票</li>
+<li>处理投票，规则与初次启动时相同。</li>
+<li>统计投票</li>
+<li>改变服务器状态</li>
+</ul>
+<h1 id="zookeeper实现分布式锁"><a href="#zookeeper实现分布式锁" class="headerlink" title="zookeeper实现分布式锁"></a>zookeeper实现分布式锁</h1><ul>
+<li><p>客户端连接zookeeper，并在/lock下创建临时的且有序的子节点，第一个客户端对应的子节点为/lock/lock-0000000000，第二个为/lock/lock-0000000001，以此类推；</p>
+</li>
+<li><p>客户端获取/lock下的子节点列表，判断自己创建的子节点是否为当前子节点列表中序号最小的子节点，如果是则认为获得锁，否则监听刚好在自己之前一位的子节点删除消息，获得子节点变更通知后重复此步骤直至获得锁；</p>
+</li>
+<li><p>执行业务代码；</p>
+</li>
+<li><p>完成业务流程后，删除对应的子节点释放锁。</p>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</article>
+
+
+
+    <!-- Footer -->
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <p class="copyright text-muted">
+          Theme By <a target="_blank" href="https://github.com/levblanc">Levblanc.</a>
+          Inspired By <a target="_blank" href="https://github.com/klugjo/hexo-theme-clean-blog">Clean Blog.</a>
+        <p class="copyright text-muted">
+          Powered By <a target="_blank" href="https://hexo.io/">Hexo.</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+    <!-- After Footer Scripts -->
+<script src="/js/highlight.pack.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function(event) {
+    var codeBlocks = Array.prototype.slice.call(document.getElementsByTagName('pre'))
+    codeBlocks.forEach(function(block, index) {
+      hljs.highlightBlock(block);
+    });
+  });
+</script>
+
+  </body>
+</html>
+

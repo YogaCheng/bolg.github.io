@@ -100,7 +100,7 @@
           <!-- Date -->
           <span class="date-time info">On
             <span class="date">2019-01-08</span>
-            <span class="time">15:01:14</span>
+            <span class="time">15:04:34</span>
           </span>
           
         </div>
@@ -131,10 +131,8 @@
 </li>
 </ul>
 <p>ZooKeeper启动时所有节点初始状态为Looking，这时集群会尝试选举出一个Leader节点，选举出的Leader节点切换为Leading状态；当节点发现集群中已经选举出Leader则该节点会切换到Following状态，然后和Leader节点保持同步；当Follower节点与Leader失去联系时Follower节点则会切换到Looking状态，开始新一轮选举；在ZooKeeper的整个生命周期中每个节点都会在Looking、Following、Leading状态间不断转换； </p>
-<p>##<strong>数据更新（事务请求）</strong></p>
-<p>客户端每发送一个更新请求，ZooKeeper都会生成一个全局唯一的递增编号，这个编号反映了所有事务操作的先后顺序，<br>这个唯一编号就是事务ID(ZXID)，只有更新请求才算是事务请求。<br>为保证按照事务的ZXID先后顺序来处理，Leader服务器会分别为每个Follower服务器创建一个队列，并将事务的先后顺序放入队列中，<br>并按照FIFO的策略进行消息发送。收到需要处理的事务后，Follower服务器会首先以及事务日志的形式写入服务器的磁盘中，写入成功后<br>会向Leader服务器发送ACK响应。当Leader服务器收到超过一半的Follower服务器的ACK响应后，会向所有Follower服务器广播Commit消息，<br>收到Commit消息的Follower服务器也会完成对事务的提交。<br>如果接收到事务请求的是Follower服务器，它会将请求转发给Leader服务器处理。</p>
-<p>##<strong>zookeeper 选举机制(崩溃恢复)</strong></p>
-<p><strong>ZXID</strong> ：ZAB协议中使用ZXID作为事务编号，ZXID为64位数字，低32位为一个递增的计数器，每一个客户端的一个事务请求时Leader产生新的事务后该计数器都会加1，高32位为Leader周期epoch编号，当新选举出一个Leader节点时Leader会取出本地日志中最大事务Proposal的ZXID解析出对应的epoch把该值加1作为新的epoch，将低32位从0开始生成新的ZXID；ZAB使用epoch来区分不同的Leader周期；</p>
+<h2 id="数据更新（事务请求）"><a href="#数据更新（事务请求）" class="headerlink" title="数据更新（事务请求）"></a><strong>数据更新（事务请求）</strong></h2><p>客户端每发送一个更新请求，ZooKeeper都会生成一个全局唯一的递增编号，这个编号反映了所有事务操作的先后顺序，<br>这个唯一编号就是事务ID(ZXID)，只有更新请求才算是事务请求。<br>为保证按照事务的ZXID先后顺序来处理，Leader服务器会分别为每个Follower服务器创建一个队列，并将事务的先后顺序放入队列中，<br>并按照FIFO的策略进行消息发送。收到需要处理的事务后，Follower服务器会首先以及事务日志的形式写入服务器的磁盘中，写入成功后<br>会向Leader服务器发送ACK响应。当Leader服务器收到超过一半的Follower服务器的ACK响应后，会向所有Follower服务器广播Commit消息，<br>收到Commit消息的Follower服务器也会完成对事务的提交。<br>如果接收到事务请求的是Follower服务器，它会将请求转发给Leader服务器处理。</p>
+<h2 id="zookeeper-选举机制-崩溃恢复"><a href="#zookeeper-选举机制-崩溃恢复" class="headerlink" title="zookeeper 选举机制(崩溃恢复)"></a><strong>zookeeper 选举机制(崩溃恢复)</strong></h2><p><strong>ZXID</strong> ：ZAB协议中使用ZXID作为事务编号，ZXID为64位数字，低32位为一个递增的计数器，每一个客户端的一个事务请求时Leader产生新的事务后该计数器都会加1，高32位为Leader周期epoch编号，当新选举出一个Leader节点时Leader会取出本地日志中最大事务Proposal的ZXID解析出对应的epoch把该值加1作为新的epoch，将低32位从0开始生成新的ZXID；ZAB使用epoch来区分不同的Leader周期；</p>
 <p><strong>myID</strong> ： 又称为SID ，服务器ID 。一个数字,通过配置文件配置，唯一。</p>
 <p><strong>选举方式-初次选举</strong></p>
 <blockquote>

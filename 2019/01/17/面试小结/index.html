@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+  <!-- Html Head Tag-->
+  <head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="YogaCheng">
+  <!-- Open Graph Data -->
+  <meta property="og:title" content="面试小结"/>
+  <meta property="og:description" content="" />
+  <meta property="og:site_name" content="Yoga&#39;s Blog"/>
+  <meta property="og:type" content="article" />
+  <meta property="og:image" content="http://yoursite.com"/>
+  
+    <link rel="alternate" href="/atom.xml" title="Yoga&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+
+  <!-- Site Title -->
+  <title>Yoga's Blog</title>
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <!-- Custom CSS -->
+  
+  <link rel="stylesheet" href="/css/style.light.css">
+
+  <!-- Google Analytics -->
+  
+
+</head>
+
+  <body>
+    <!-- Page Header -->
+
+
+<header class="site-header header-background" style="background-image: url(/img/default-banner-dark.jpg)">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="page-title with-background-image">
+          <p class="title">面试小结</p>
+          <p class="subtitle"></p>
+        </div>
+        <div class="site-menu with-background-image">
+          <ul>
+            
+              <li>
+                <a href="/">
+                  
+                  Home
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="/archives">
+                  
+                  Archives
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="https://github.com/<your-github-username>">
+                  
+                  Github
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="mailto:<your-email-address>">
+                  
+                  Email
+                  
+                </a>
+              </li>
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<article>
+  <div class="container typo">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-info text-muted">
+          
+            <!-- Author -->
+            <span class="author info">By YogaCheng</span>
+          
+          <!-- Date -->
+          <span class="date-time info">On
+            <span class="date">2019-01-17</span>
+            <span class="time">19:57:48</span>
+          </span>
+          
+        </div>
+        <!-- Tags -->
+        
+          <div class="post-tags text-muted">
+            Tags: 
+
+<a class="tag" href="/tags/面试/">#面试</a>
+
+
+          </div>
+        
+        <!-- Post Main Content -->
+        <div class="post-content">
+          <h2 id="数据库的脏读、幻读、不可重复读"><a href="#数据库的脏读、幻读、不可重复读" class="headerlink" title="数据库的脏读、幻读、不可重复读"></a>数据库的脏读、幻读、不可重复读</h2><h3 id="1-脏读"><a href="#1-脏读" class="headerlink" title="1.脏读"></a>1.脏读</h3><p>A事务读取B事务尚未提交的数据，此时如果B事务发生错误并执行回滚操作，那么A事务读取到的数据就是脏数据。就好像原本的数据比较干净、纯粹，此时由于B事务更改了它，这个数据变得不再纯粹。这个时候A事务立即读取了这个脏数据，但事务B良心发现，又用回滚把数据恢复成原来干净、纯粹的样子，而事务A却什么都不知道，最终结果就是事务A读取了此次的脏数据，称为脏读。<br><a id="more"></a></p>
+<h3 id="2-不可重复读"><a href="#2-不可重复读" class="headerlink" title="2.不可重复读"></a>2.不可重复读</h3><p>事务A在执行读取操作，由整个事务A比较大，前后读取同一条数据需要经历很长的时间 。而在事务A第一次读取数据，比如此时读取了小明的年龄为20岁，事务B执行更改操作，将小明的年龄更改为30岁，此时事务A第二次读取到小明的年龄时，发现其年龄是30岁，和之前的数据不一样了，也就是数据不重复了，系统不可以读取到重复的数据，成为不可重复读。</p>
+<h3 id="3-幻读"><a href="#3-幻读" class="headerlink" title="3.幻读"></a>3.幻读</h3><p>事务A在执行读取操作，需要两次统计数据的总量，前一次查询数据总量后，此时事务B执行了新增数据的操作并提交后，这个时候事务A读取的数据总量和之前统计的不一样，就像产生了幻觉一样，平白无故的多了几条数据，成为幻读。</p>
+<h3 id="不可重复读和幻读到底有什么区别呢？"><a href="#不可重复读和幻读到底有什么区别呢？" class="headerlink" title="不可重复读和幻读到底有什么区别呢？"></a><strong>不可重复读和幻读到底有什么区别呢？</strong></h3><p>1.不可重复读是读取了其他事务更改的数据，针对update操作</p>
+<p>解决：<strong>使用行级锁，锁定该行，事务A多次读取操作完成后才释放该锁，这个时候才允许其他事务更改刚才的数据。</strong></p>
+<p>2.幻读是读取了其他事务新增的数据，针对insert操作</p>
+<p>解决：<strong>使用表级锁，锁定整张表，事务A多次读取数据总量之后才释放该锁，这个时候才允许其他事务新增数据。</strong></p>
+<hr>
+<h2 id="何谓悲观锁与乐观锁"><a href="#何谓悲观锁与乐观锁" class="headerlink" title="何谓悲观锁与乐观锁"></a>何谓悲观锁与乐观锁</h2><h3 id="悲观锁"><a href="#悲观锁" class="headerlink" title="悲观锁"></a>悲观锁</h3><p><strong>总是假设最坏的情况</strong>，每次去拿数据的时候都认为别人会修改，所以每次在拿数据的时候都会上锁，这样别人想拿这个数据就会阻塞直到它拿到锁（共享资源每次只给一个线程使用，其它线程阻塞，用完后再把资源转让给其它线程）。传统的关系型数据库里边就用到了很多这种锁机制，比如行锁，表锁等，读锁，写锁等，都是在做操作之前先上锁。Java中<code>synchronized</code>和<code>ReentrantLock</code>等独占锁就是悲观锁思想的实现。</p>
+<h3 id="乐观锁"><a href="#乐观锁" class="headerlink" title="乐观锁"></a>乐观锁</h3><p>总是假设最好的情况，每次去拿数据的时候都认为别人不会修改，所以不会上锁，但是在更新的时候会判断一下在此期间别人有没有去更新这个数据，可以使用版本号机制和CAS算法实现。乐观锁适用于多读的应用类型，这样可以提高吞吐量，像数据库提供的类似于<code>write_condition</code>机制，其实都是提供的乐观锁。在Java中<code>java.util.concurrent.atomic</code>包下面的原子变量类就是使用了乐观锁的一种实现方式<code>CAS</code>实现的。</p>
+<h3 id="乐观锁常见的两种实现方式"><a href="#乐观锁常见的两种实现方式" class="headerlink" title="乐观锁常见的两种实现方式"></a>乐观锁常见的两种实现方式</h3><h4 id="1-版本号机制"><a href="#1-版本号机制" class="headerlink" title="1.版本号机制"></a>1.版本号机制</h4><p>一般是在数据表中加上一个数据版本号version字段，表示数据被修改的次数，当数据被修改时，version值会加一。当线程A要更新数据值时，在读取数据的同时也会读取version值，在提交更新时，若刚才读取到的version值为当前数据库中的version值相等时才更新，否则重试更新操作，直到更新成功。</p>
+<p><strong>举一个简单的例子：</strong> </p>
+<p>假设数据库中帐户信息表中有一个 version 字段，当前值为 1 ；而当前帐户余额字段（ balance ）为 $100 。</p>
+<ol>
+<li>操作员 A 此时将其读出（ version=1 ），并从其帐户余额中扣除 50（50（100-$50 ）。</li>
+<li>在操作员 A 操作的过程中，操作员B 也读入此用户信息（ version=1 ），并从其帐户余额中扣除 20（20（100-$20 ）。</li>
+<li>操作员 A 完成了修改工作，将数据版本号加一（ version=2 ），连同帐户扣除后余额（ balance=$50 ），提交至数据库更新，此时由于提交数据版本大于数据库记录当前版本，数据被更新，数据库记录 version 更新为 2 。</li>
+<li>操作员 B 完成了操作，也将版本号加一（ version=2 ）试图向数据库提交数据（ balance=$80 ），但此时比对数据库记录版本时发现，操作员 B 提交的数据版本号为 2 ，数据库记录当前版本也为 2 ，不满足 “ 提交版本必须大于记录当前版本才能执行更新 “ 的乐观锁策略，因此，操作员 B 的提交被驳回。</li>
+</ol>
+<p>这样，就避免了操作员 B 用基于 version=1 的旧数据修改的结果覆盖操作员A 的操作结果的可能。</p>
+<h4 id="2-CAS算法"><a href="#2-CAS算法" class="headerlink" title="2.CAS算法"></a>2.CAS算法</h4><p><code>CAS</code>机制当中使用了3个基本操作数：内存地址V，旧的预期值A，要修改的新值B。更新一个变量的时候，只有当变量的预期值A和内存地址V当中的实际值相同时，才会将内存地址V对应的值修改为B。</p>
+<ol>
+<li>在内存地址V当中，存储着值为10的变量。</li>
+<li>此时线程1想要把变量的值增加1。对线程1来说，旧的预期值A=10，要修改的新值B=11。</li>
+<li>在线程1要提交更新之前，另一个线程2抢先一步，把内存地址V中的变量值率先更新成了11。</li>
+<li>线程1开始提交更新，首先进行<strong>A和地址V的实际值比较（Compare）</strong>，发现A不等于V的实际值，提交失败。</li>
+<li>线程1重新获取内存地址V的当前值，并重新计算想要修改的新值。此时对线程1来说，A=11，B=12。这个重新尝试的过程被称为<strong>自旋</strong>。</li>
+<li>这一次比较幸运，没有其他线程改变地址V的值。线程1进行<strong>Compare</strong>，发现A和地址V的实际值是相等的。</li>
+<li>线程1进行<strong>SWAP</strong>，把地址V的值替换为B，也就是12。</li>
+</ol>
+<p>从思想上来说，Synchronized属于<strong>悲观锁</strong>，悲观地认为程序中的并发情况严重，所以严防死守。<code>CAS</code>属于<strong>乐观锁</strong>，乐观地认为程序中的并发情况不那么严重，所以让线程不断去尝试更新。</p>
+<p><strong>CAS的缺点</strong></p>
+<p><strong>1.CPU开销较大</strong></p>
+<p>​    在并发量比较高的情况下，如果许多线程反复尝试更新某一个变量，却又一直更新不成功，循环往复，会给CPU带来很大的压力。</p>
+<p><strong>2.不能保证代码块的原子性</strong></p>
+<p>​    <code>CAS</code>机制所保证的只是一个变量的原子性操作，而不能保证整个代码块的原子性。比如需要保证3个变量共同进行原子性的更新，就不得不使用Synchronized了。</p>
+<p>​    因为它本身就只是一个锁住总线的原子交换操作啊。两个<code>CAS</code>操作之间并不能保证没有重入现象。</p>
+<h4 id="3-ABA问题"><a href="#3-ABA问题" class="headerlink" title="3. ABA问题"></a>3. ABA问题</h4><ol>
+<li>假设内存中有一个值为A的变量，存储在地址V当中。</li>
+<li>此时有三个线程想使用CAS的方式更新这个变量值，每个线程的执行时间有略微的偏差。线程1和线程2已经获得当前值，线程3还未获得当前值。</li>
+<li>接下来，线程1先一步执行成功，把当前值成功从A更新为B；同时线程2因为某种原因被阻塞住，没有做更新操作；线程3在线程1更新之后，获得了当前值B。</li>
+<li>再之后，线程2仍然处于阻塞状态，线程3继续执行，成功把当前值从B更新成了A。</li>
+<li>最后，线程2终于恢复了运行状态，由于阻塞之前已经获得了“当前值”A，并且经过compare检测，内存地址V中的实际值也是A，所以成功把变量值A更新成了B。</li>
+</ol>
+<p>这个过程中，线程2获取到的变量值A是一个旧值，尽管和当前的实际值相同，但内存地址V中的变量已经经历了A-&gt;B-&gt;A的改变。</p>
+<p>利用版本号比较可以有效解决ABA问题。在Java当中，<code>AtomicStampedReference</code>类就实现了用版本号做比较的CAS机制。</p>
+<h2 id="Spring-Boot-项目启动时执行特定方法"><a href="#Spring-Boot-项目启动时执行特定方法" class="headerlink" title="Spring Boot  项目启动时执行特定方法"></a>Spring Boot  项目启动时执行特定方法</h2><p><code>Springboot</code>给我们提供了两种“开机启动”某些方法的方式：<code>ApplicationRunner</code>和<code>CommandLineRunner</code>。</p>
+<p>这两种方法提供的目的是为了满足，在项目启动的时候立刻执行某些方法。我们可以通过实现<code>ApplicationRunner</code>和<code>CommandLineRunner</code>，来实现，他们都是在<code>SpringApplication</code> 执行之后开始执行的。</p>
+<p><code>CommandLineRunner</code>接口可以用来接收字符串数组的命令行参数，<code>ApplicationRunner</code> 是使用<code>ApplicationArguments</code> 用来接收参数的，貌似后者更牛逼一些。</p>
+<p><strong><code>CommandLineRunner</code>：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.springboot.study;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.CommandLineRunner;</span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Component;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Created by pangkunkun on 2017/9/3.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyCommandLineRunner</span> <span class="keyword">implements</span> <span class="title">CommandLineRunner</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">(String... var1)</span> <span class="keyword">throws</span> Exception</span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"This will be execute when the project was started!"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong><code>ApplicationRunner</code>：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.springboot.study;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.ApplicationArguments;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.ApplicationRunner;</span><br><span class="line"><span class="keyword">import</span> org.springframework.core.Ordered;</span><br><span class="line"><span class="keyword">import</span> org.springframework.core.annotation.Order;</span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Component;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Created by pangkunkun on 2017/9/3.</span></span><br><span class="line"><span class="comment"> * 这里通过设定value的值来指定执行顺序</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@Order</span>(value = <span class="number">1</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyApplicationRunner</span> <span class="keyword">implements</span> <span class="title">ApplicationRunner</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">(ApplicationArguments var1)</span> <span class="keyword">throws</span> Exception</span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"MyApplicationRunner1!"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="在元素的装载数量明确的时候HashMap的大小应该如何选择"><a href="#在元素的装载数量明确的时候HashMap的大小应该如何选择" class="headerlink" title="在元素的装载数量明确的时候HashMap的大小应该如何选择"></a>在元素的装载数量明确的时候HashMap的大小应该如何选择</h2><p>HashMap的实例有两个参数影响其性能：<strong>初始容量</strong>和<strong>加载因子</strong>。</p>
+<p>首先我们来看初始容量和加载因子的定义。</p>
+<p>容量是哈希表中桶的数量，初始容量只是哈希表在创建时的容量。</p>
+<p>加载因子是哈希表在其容量自动增加之前可以达到多满的一种尺度。</p>
+<p>当哈希表中条目的数目超过 容量乘加载因子 的时候，则要对该哈希表进行rehash操作，从而哈希表将具有大约两倍的桶数。（以上摘自JDK6）</p>
+<p>HashMap默认的加载因子是0.75 .它在时间和空间成本上寻求了一种折中。</p>
+<p><strong>初始容量=2^n次方 （保证散列的均匀性）</strong><br><strong>初始容量*0.75&gt;=指定容量 （保证不会resize）</strong></p>
+<p><strong>expectedSize / 0.75F + 1.0F</strong></p>
+<h2 id="JVM中新生代、老年代解析"><a href="#JVM中新生代、老年代解析" class="headerlink" title="JVM中新生代、老年代解析"></a>JVM中新生代、老年代解析</h2><p> 一：新生代：主要是用来存放新生的对象。一般占据堆的1/3空间。由于频繁创建对象，所以新生代会频繁触发MinorGC进行垃圾回收。</p>
+<p>​         新生代又分为 Eden区、ServivorFrom、ServivorTo三个区。</p>
+<p>​         Eden区：Java新对象的出生地（如果新创建的对象占用内存很大，则直接分配到老年代）。当Eden区内存不够的时候就会触发MinorGC，对新生代区进行一次垃圾回收。</p>
+<p>​         ServivorTo：保留了一次MinorGC过程中的幸存者。</p>
+<p>​         ServivorFrom：上一次GC的幸存者，作为这一次GC的被扫描者。</p>
+<p>​         MinorGC的过程：MinorGC采用复制算法。首先，把Eden和ServivorFrom区域中存活的对象复制到ServicorTo区域（如果有对象的年龄以及达到了老年的标准，则赋值到老年代区），同时把这些对象的年龄+1（如果ServicorTo不够位置了就放到老年区）；然后，清空Eden和ServicorFrom中的对象；最后，ServicorTo和ServicorFrom互换，原ServicorTo成为下一次GC时的ServicorFrom区。</p>
+<p>HotSpot默认Eden与Survivor的大小比例是8 : 1，也就是说<strong>Eden:Survivor From : Survivor To = 8:1:1</strong>。所以每次新生代可用内存空间为整个新生代容量的90%,而剩下的10%用来存放回收后存活的对象。</p>
+<p>  1. 当Eden区满的时候,会触发第一次Minor gc,把还活着的对象拷贝到Survivor From区；当Eden区再次触发Minor gc的时候,会扫描Eden区和From区域,对两个区域进行垃圾回收,经过这次回收后还存活的对象,则直接复制到To区域,并将Eden和From区域清空。</p>
+<p>  2. 当后续Eden又发生Minor gc的时候,会对Eden和To区域进行垃圾回收,存活的对象复制到From区域,并将Eden和To区域清空。</p>
+<p>  3. 部分对象会在From和To区域中复制来复制去,如此交换<strong>15次</strong>(由JVM参数MaxTenuringThreshold决定,这个参数<strong>默认是15</strong>),最终如果还是存活,就存入到老年代。</p>
+<p>二：老年代：主要存放应用程序中生命周期长的内存对象。</p>
+<p>​    老年代的对象比较稳定，所以MajorGC不会频繁执行。在进行MajorGC前一般都先进行了一次MinorGC，使得有新生代的对象晋身入老年代，导致空间不够用时才触发。当无法找到足够大的连续空间分配给新创建的较大对象时也会提前触发一次MajorGC进行垃圾回收腾出空间。</p>
+<p>​    MajorGC采用标记—清除算法：首先扫描一次所有老年代，标记出存活的对象，然后回收没有标记的对象。MajorGC的耗时比较长，因为要扫描再回收。MajorGC会产生内存碎片，为了减少内存损耗，我们一般需要进行合并或者标记出来方便下次直接分配。</p>
+<p>​     当老年代也满了装不下的时候，就会抛出OOM（Out of Memory）异常。</p>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</article>
+
+
+
+    <!-- Footer -->
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <p class="copyright text-muted">
+          Theme By <a target="_blank" href="https://github.com/levblanc">Levblanc.</a>
+          Inspired By <a target="_blank" href="https://github.com/klugjo/hexo-theme-clean-blog">Clean Blog.</a>
+        <p class="copyright text-muted">
+          Powered By <a target="_blank" href="https://hexo.io/">Hexo.</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+    <!-- After Footer Scripts -->
+<script src="/js/highlight.pack.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function(event) {
+    var codeBlocks = Array.prototype.slice.call(document.getElementsByTagName('pre'))
+    codeBlocks.forEach(function(block, index) {
+      hljs.highlightBlock(block);
+    });
+  });
+</script>
+
+  </body>
+</html>
+

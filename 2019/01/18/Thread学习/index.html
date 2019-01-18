@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+  <!-- Html Head Tag-->
+  <head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="YogaCheng">
+  <!-- Open Graph Data -->
+  <meta property="og:title" content="Thread学习(一)"/>
+  <meta property="og:description" content="" />
+  <meta property="og:site_name" content="Yoga&#39;s Blog"/>
+  <meta property="og:type" content="article" />
+  <meta property="og:image" content="http://yoursite.com"/>
+  
+    <link rel="alternate" href="/atom.xml" title="Yoga&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+
+  <!-- Site Title -->
+  <title>Yoga's Blog</title>
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <!-- Custom CSS -->
+  
+  <link rel="stylesheet" href="/css/style.light.css">
+
+  <!-- Google Analytics -->
+  
+
+</head>
+
+  <body>
+    <!-- Page Header -->
+
+
+<header class="site-header header-background" style="background-image: url(/img/default-banner-dark.jpg)">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="page-title with-background-image">
+          <p class="title">Thread学习(一)</p>
+          <p class="subtitle"></p>
+        </div>
+        <div class="site-menu with-background-image">
+          <ul>
+            
+              <li>
+                <a href="/">
+                  
+                  Home
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="/archives">
+                  
+                  Archives
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="/522676621@qq.com">
+                  
+                  Email
+                  
+                </a>
+              </li>
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<article>
+  <div class="container typo">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-info text-muted">
+          
+            <!-- Author -->
+            <span class="author info">By YogaCheng</span>
+          
+          <!-- Date -->
+          <span class="date-time info">On
+            <span class="date">2019-01-18</span>
+            <span class="time">23:17:07</span>
+          </span>
+          
+          <!--  Categories  -->
+            <span class="categories info">Under 
+
+<a href="/categories/高并发/">高并发</a>
+</span>
+          
+        </div>
+        <!-- Tags -->
+        
+          <div class="post-tags text-muted">
+            Tags: 
+
+<a class="tag" href="/tags/Thread/">#Thread</a>
+
+
+          </div>
+        
+        <!-- Post Main Content -->
+        <div class="post-content">
+          <h2 id="Thread的六种状态"><a href="#Thread的六种状态" class="headerlink" title="Thread的六种状态"></a>Thread的六种状态</h2><p><strong>线程共有6种状态；在某一时刻只能是这6种状态之一。这些状态由Thread.State这个枚举类型表示，并且可以通过getState()方法获得当前具体的状态类型。</strong></p>
+<a id="more"></a>
+<p>包括（new，runnable，blocked，waiting，timed_waiting,terminatmed）</p>
+<p>　　<strong>NEW</strong><br>　　至今尚未启动的线程的状态。<br>　　当使用new一个新线程时，如new Thread(r)，但还没有执行start(),线程还没有开始运行，这时线程的状态就是NEW。</p>
+<p>　　<strong>RUNNABLE</strong><br>　　可运行线程的线程状态。<br>　　当start()方法被调用时，线程就进入RUNNABLE状态。此时的线程可能正在运行，也可能没有运行</p>
+<p>　　<strong>BLOCKED</strong><br>　　受阻塞并且正在等待监视器锁的某一线程的线程状态。<br>　　下列情况会进入阻塞状态：<br>　　1.等待某个操作的返回，例如IO操作，该操作返回之前，线程不会继续下面的代码。<br>　　2.等待某个“锁”，在其他线程或程序释放这个“锁”之前，线程不会继续执行。<br>　　3.等待一定的触发条件。<br>　　4.线程执行了sleep方法。<br>　　5.线程被suspend()方法挂起。<br>　　一个被阻塞的线程在下列情况下会被重新激活：<br>　　1.执行了sleep()方法，睡眠时间已到。<br>　　2.等待的其他线程或程序持有的“锁”已被释放。<br>　　3.正在等待触发条件的线程，条件得到满足。<br>　　4.执行了suspend()方法，被调用了resume()方法。<br>　　5.等待的操作返回的线程，操作正确返回。</p>
+<p>　　<strong>WAITING</strong><br>　　某一等待线程的线程状态。<br>　　线程因为调用了Object.wait()或Thread.join()而未运行，就会进入WAITING状态。</p>
+<p>　　<strong>TIMED_WAITING</strong><br>　　具有指定等待时间的某一等待线程的线程状态。<br>　　线程因为调用了Thread.sleep()，或者加上超时值来调用Object.wait()或Thread.join()而未运行，则会进入TIMED_WAITING状态。</p>
+<p>　　<strong>TERMINATED</strong><br>　　已终止线程的线程状态。<br>　　线程已运行完毕。它的run()方法已正常结束或通过抛出异常而结束。</p>
+<h2 id="线程的启动和关闭"><a href="#线程的启动和关闭" class="headerlink" title="线程的启动和关闭"></a>线程的启动和关闭</h2><h3 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h3><p><strong>start </strong>方法  是一个native方法会告诉jvm去启动一个线程并执行run方法</p>
+<h3 id="关闭"><a href="#关闭" class="headerlink" title="关闭"></a>关闭</h3><h4 id="使用volatile标志位"><a href="#使用volatile标志位" class="headerlink" title="使用volatile标志位"></a>使用volatile标志位</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyRunnable</span> <span class="keyword">implements</span> <span class="title">Runnable</span> </span>&#123;</span><br><span class="line"> </span><br><span class="line">	<span class="comment">//定义退出标志，true会一直执行，false会退出循环</span></span><br><span class="line">	<span class="comment">//使用volatile目的是保证可见性，一处修改了标志，处处都要去主存读取新的值，而不是使用缓存</span></span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">volatile</span> <span class="keyword">boolean</span> flag = <span class="keyword">true</span>;</span><br><span class="line"> </span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">"第"</span> + Thread.currentThread().getName() + <span class="string">"个线程创建"</span>);</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			Thread.sleep(<span class="number">1000L</span>);</span><br><span class="line">		&#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">		<span class="comment">//退出标志生效位置</span></span><br><span class="line">		<span class="keyword">while</span> (flag) &#123;</span><br><span class="line">		&#125;</span><br><span class="line">		System.out.println(<span class="string">"第"</span> + Thread.currentThread().getName() + <span class="string">"个线程终止"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TreadTest</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] arg)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">		MyRunnable runnable = <span class="keyword">new</span> MyRunnable();</span><br><span class="line">		</span><br><span class="line">		<span class="comment">//创建3个线程</span></span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= <span class="number">3</span>; i++) &#123;</span><br><span class="line">			Thread thread = <span class="keyword">new</span> Thread(runnable, i + <span class="string">""</span>);</span><br><span class="line">			thread.start();</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">//线程休眠</span></span><br><span class="line">		Thread.sleep(<span class="number">2000L</span>);</span><br><span class="line">		System.out.println(<span class="string">"——————————————————————————"</span>);</span><br><span class="line">		<span class="comment">//修改退出标志，使线程终止</span></span><br><span class="line">		runnable.flag = <span class="keyword">false</span>;	</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="使用interrupt"><a href="#使用interrupt" class="headerlink" title="使用interrupt()"></a>使用interrupt()</h4><p><strong>使用interrupt()中断的方式，注意使用interrupt()方法中断正在运行中的线程只会修改中断状态位，可以通过isInterrupted()判断。如果使用interrupt()方法中断阻塞中的线程，那么就会抛出InterruptedException异常，可以通过catch捕获异常，然后进行处理后终止线程。有些情况，我们不能判断线程的状态，所以使用interrupt()方法时一定要慎重考虑。</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyRunnable2</span> <span class="keyword">implements</span> <span class="title">Runnable</span></span>&#123;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span></span>&#123;</span><br><span class="line">		System.out.println(Thread.currentThread().getName() + <span class="string">" 线程创建"</span>);</span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			Thread.sleep(<span class="number">1000L</span>);</span><br><span class="line">		&#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">//运行时的线程被中断后，只会修改中断标记，不会抛出异常</span></span><br><span class="line">		<span class="keyword">while</span>(Thread.currentThread().isInterrupted())&#123;</span><br><span class="line">			</span><br><span class="line">		&#125;</span><br><span class="line">		System.out.println(Thread.currentThread().getName() + <span class="string">" 线程被中断"</span>);</span><br><span class="line">	&#125;</span><br><span class="line"> </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TreadTest</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] arg)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">		Runnable runnable = <span class="keyword">new</span> MyRunnable2();</span><br><span class="line">		</span><br><span class="line">		<span class="comment">//创建3个线程</span></span><br><span class="line">		Thread thread1 = <span class="keyword">new</span> Thread(runnable, <span class="string">"1"</span>);</span><br><span class="line">		Thread thread2 = <span class="keyword">new</span> Thread(runnable, <span class="string">"2"</span>);</span><br><span class="line">		Thread thread3 = <span class="keyword">new</span> Thread(runnable, <span class="string">"3"</span>);</span><br><span class="line">		thread1.start();</span><br><span class="line">		thread2.start();</span><br><span class="line">		thread3.start();</span><br><span class="line">		</span><br><span class="line">		<span class="comment">//线程休眠</span></span><br><span class="line">		Thread.sleep(<span class="number">2000L</span>);</span><br><span class="line">		</span><br><span class="line">		<span class="comment">//修改退出标志，使线程终止</span></span><br><span class="line">		thread1.interrupt();</span><br><span class="line">		thread2.interrupt();</span><br><span class="line">		thread3.interrupt();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</article>
+
+
+
+    <!-- Footer -->
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <p class="copyright text-muted">
+          Theme By <a target="_blank" href="https://github.com/levblanc">Levblanc.</a>
+          Inspired By <a target="_blank" href="https://github.com/klugjo/hexo-theme-clean-blog">Clean Blog.</a>
+        <p class="copyright text-muted">
+          Powered By <a target="_blank" href="https://hexo.io/">Hexo.</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+    <!-- After Footer Scripts -->
+<script src="/js/highlight.pack.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function(event) {
+    var codeBlocks = Array.prototype.slice.call(document.getElementsByTagName('pre'))
+    codeBlocks.forEach(function(block, index) {
+      hljs.highlightBlock(block);
+    });
+  });
+</script>
+
+  </body>
+</html>
+

@@ -92,7 +92,7 @@
           <!-- Date -->
           <span class="date-time info">On
             <span class="date">2019-01-18</span>
-            <span class="time">19:26:26</span>
+            <span class="time">22:22:49</span>
           </span>
           
           <!--  Categories  -->
@@ -140,6 +140,7 @@
 <p><strong>在每个volatile写操作的后面插入一个StoreLoad屏障。</strong></p>
 <p><strong>在每个volatile读操作的后面插入一个LoadLoad屏障。</strong></p>
 <p><strong>在每个volatile读操作的后面插入一个LoadStore屏障。</strong></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/10803273-a2b96aad8dc32627.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/952/format/webp" alt="img"></p>
 <p><strong>volatile是轻量级同步机制</strong><br>相对于synchronized块的代码锁，volatile应该是提供了一个轻量级的针对共享变量的锁，当我们在多个线程间使用共享变量进行通信的时候需要考虑将共享变量用volatile来修饰。</p>
 <p>volatile是一种稍弱的同步机制，在访问volatile变量时不会执行加锁操作，也就不会执行线程阻塞，因此volatilei变量是一种比synchronized关键字更轻量级的同步机制。</p>
 <p><strong>volatile使用建议</strong><br>使用建议：在两个或者更多的线程需要访问的成员变量上使用volatile。当要访问的变量已在synchronized代码块中，或者为常量时，没必要使用volatile。</p>

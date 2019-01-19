@@ -92,7 +92,7 @@
           <!-- Date -->
           <span class="date-time info">On
             <span class="date">2019-01-18</span>
-            <span class="time">23:17:07</span>
+            <span class="time">17:27:26</span>
           </span>
           
           <!--  Categories  -->
@@ -129,6 +129,34 @@
 <h4 id="使用interrupt"><a href="#使用interrupt" class="headerlink" title="使用interrupt()"></a>使用interrupt()</h4><p><strong>使用interrupt()中断的方式，注意使用interrupt()方法中断正在运行中的线程只会修改中断状态位，可以通过isInterrupted()判断。如果使用interrupt()方法中断阻塞中的线程，那么就会抛出InterruptedException异常，可以通过catch捕获异常，然后进行处理后终止线程。有些情况，我们不能判断线程的状态，所以使用interrupt()方法时一定要慎重考虑。</strong></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyRunnable2</span> <span class="keyword">implements</span> <span class="title">Runnable</span></span>&#123;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span></span>&#123;</span><br><span class="line">		System.out.println(Thread.currentThread().getName() + <span class="string">" 线程创建"</span>);</span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			Thread.sleep(<span class="number">1000L</span>);</span><br><span class="line">		&#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">//运行时的线程被中断后，只会修改中断标记，不会抛出异常</span></span><br><span class="line">		<span class="keyword">while</span>(Thread.currentThread().isInterrupted())&#123;</span><br><span class="line">			</span><br><span class="line">		&#125;</span><br><span class="line">		System.out.println(Thread.currentThread().getName() + <span class="string">" 线程被中断"</span>);</span><br><span class="line">	&#125;</span><br><span class="line"> </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TreadTest</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] arg)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">		Runnable runnable = <span class="keyword">new</span> MyRunnable2();</span><br><span class="line">		</span><br><span class="line">		<span class="comment">//创建3个线程</span></span><br><span class="line">		Thread thread1 = <span class="keyword">new</span> Thread(runnable, <span class="string">"1"</span>);</span><br><span class="line">		Thread thread2 = <span class="keyword">new</span> Thread(runnable, <span class="string">"2"</span>);</span><br><span class="line">		Thread thread3 = <span class="keyword">new</span> Thread(runnable, <span class="string">"3"</span>);</span><br><span class="line">		thread1.start();</span><br><span class="line">		thread2.start();</span><br><span class="line">		thread3.start();</span><br><span class="line">		</span><br><span class="line">		<span class="comment">//线程休眠</span></span><br><span class="line">		Thread.sleep(<span class="number">2000L</span>);</span><br><span class="line">		</span><br><span class="line">		<span class="comment">//修改退出标志，使线程终止</span></span><br><span class="line">		thread1.interrupt();</span><br><span class="line">		thread2.interrupt();</span><br><span class="line">		thread3.interrupt();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="volatile两个作用"><a href="#volatile两个作用" class="headerlink" title="volatile两个作用"></a>volatile两个作用</h3><hr>
+<h4 id="1、保证内存可见性"><a href="#1、保证内存可见性" class="headerlink" title="1、保证内存可见性"></a><strong>1、保证内存可见性</strong></h4><p>我们知道CPU的速度比内存要快得多，为了弥补这个性能差异，CPU内核都会有自己的高速缓存区，当内核运行的线程执行一段代码时，首先将这段代码的指令集进行缓存行填充到高速缓存，如果非volatil变量当CPU执行修改了此变量之后，会将修改后的值回写到高速缓存，然后再刷新到内存中。如果在刷新会内存之前，由于是共享变量，那么CORE2中的线程执行的代码也用到了这个变量，这是变量的值依然是旧的。volatile关键字就会解决这个问题的，如何解决呢，首先被volatile关键字修饰的共享变量在转换成汇编语言时，会加上一个以lock为前缀的指令，当CPU发现这个指令时，立即做两件事：</p>
+<p><strong>1.将当前内核高速缓存行的数据立刻回写到内存</strong><br><strong>2.使在其他内核里缓存了该内存地址的数据无效</strong></p>
+<h4 id="2、防止指令重排"><a href="#2、防止指令重排" class="headerlink" title="2、防止指令重排"></a><strong>2、防止指令重排</strong></h4><p>指令重排序是JVM为了优化指令，提高程序运行效率，在不影响单线程程序执行结果的前提下，尽可能地提高并行度。编译器、处理器也遵循这样一个目标。注意是单线程。多线程的情况下指令重排序就会给程序员带来问题。</p>
+<p>volatile关键字通过提供“内存屏障”的方式来防止指令被重排序，为了实现volatile的内存语义，编译器在生成字节码时，会在指令序列中插入内存屏障来禁止特定类型的处理器重排序。</p>
+<p>大多数的处理器都支持内存屏障的指令。</p>
+<p>对于编译器来说，发现一个最优布置来最小化插入屏障的总数几乎不可能，为此，Java内存模型采取保守策略。下面是基于保守策略的JMM内存屏障插入策略：</p>
+<p><strong>在每个volatile写操作的前面插入一个StoreStore屏障。</strong></p>
+<p><strong>在每个volatile写操作的后面插入一个StoreLoad屏障。</strong></p>
+<p><strong>在每个volatile读操作的后面插入一个LoadLoad屏障。</strong></p>
+<p><strong>在每个volatile读操作的后面插入一个LoadStore屏障。</strong></p>
+<p><strong>volatile是轻量级同步机制</strong><br>相对于synchronized块的代码锁，volatile应该是提供了一个轻量级的针对共享变量的锁，当我们在多个线程间使用共享变量进行通信的时候需要考虑将共享变量用volatile来修饰。</p>
+<p>volatile是一种稍弱的同步机制，在访问volatile变量时不会执行加锁操作，也就不会执行线程阻塞，因此volatilei变量是一种比synchronized关键字更轻量级的同步机制。</p>
+<p><strong>volatile使用建议</strong><br>使用建议：在两个或者更多的线程需要访问的成员变量上使用volatile。当要访问的变量已在synchronized代码块中，或者为常量时，没必要使用volatile。</p>
+<p>由于使用volatile屏蔽掉了JVM中必要的代码优化，所以在效率上比较低，因此一定在必要时才使用此关键字。</p>
+<p><strong>volatile和synchronized区别</strong></p>
+<p><strong>1、volatile不会进行加锁操作：</strong></p>
+<p>volatile变量是一种稍弱的同步机制在访问volatile变量时不会执行加锁操作，因此也就不会使执行线程阻塞，因此volatile变量是一种比synchronized关键字更轻量级的同步机制。</p>
+<p><strong>2、volatile变量作用类似于同步变量读写操作：</strong></p>
+<p>从内存可见性的角度看，写入volatile变量相当于退出同步代码块，而读取volatile变量相当于进入同步代码块。</p>
+<p><strong>3、volatile不如synchronized安全：</strong></p>
+<p>在代码中如果过度依赖volatile变量来控制状态的可见性，通常会比使用锁的代码更脆弱，也更难以理解。仅当volatile变量能简化代码的实现以及对同步策略的验证时，才应该使用它。一般来说，用同步机制会更安全些。</p>
+<p><strong>4、volatile无法同时保证内存可见性和原则性：</strong></p>
+<p>加锁机制（即同步机制）既可以确保可见性又可以确保原子性，而volatile变量只能确保可见性，原因是声明为volatile的简单变量如果当前值与该变量以前的值相关，那么volatile关键字不起作用，也就是说如下的表达式都不是原子操作：“count++”、“count = count+1”。</p>
+<p><strong>当且仅当满足以下所有条件时，才应该使用volatile变量：</strong></p>
+<p><strong>1、 对变量的写入操作不依赖变量的当前值，或者你能确保只有单个线程更新变量的值。</strong></p>
+<p><strong>2、该变量没有包含在具有其他变量的不变式中。</strong></p>
+<p><strong>总结：在需要同步的时候，第一选择应该是synchronized关键字，这是最安全的方式，尝试其他任何方式都是有风险的。尤其在、jdK1.5之后，对synchronized同步机制做了很多优化，如：自适应的自旋锁、锁粗化、锁消除、轻量级锁等，使得它的性能明显有了很大的提升。</strong></p>
 
         </div>
       </div>

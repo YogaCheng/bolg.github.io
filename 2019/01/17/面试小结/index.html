@@ -92,7 +92,7 @@
           <!-- Date -->
           <span class="date-time info">On
             <span class="date">2019-01-17</span>
-            <span class="time">17:27:26</span>
+            <span class="time">19:26:26</span>
           </span>
           
           <!--  Categories  -->
@@ -217,6 +217,7 @@
 <li>如果是红黑树那就按照树的方式获取值。</li>
 <li>就不满足那就按照链表的方式遍历获取值。</li>
 </ol>
+<p><strong>注：向数组插入元素用的是CAS无锁化的方式，数组一下的链表、红黑树使用的synchronized 同步块代码</strong></p>
 <p><strong>1.8 在 1.7 的数据结构上做了大的改动，采用红黑树之后可以保证查询效率（<code>O(logn)</code>），甚至取消了 ReentrantLock 改为了 synchronized，这样可以看出在新版的 JDK 中对 synchronized 优化是很到位的。</strong></p>
 
         </div>

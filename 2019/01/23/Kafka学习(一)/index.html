@@ -92,7 +92,7 @@
           <!-- Date -->
           <span class="date-time info">On
             <span class="date">2019-01-23</span>
-            <span class="time">21:17:03</span>
+            <span class="time">21:23:20</span>
           </span>
           
           <!--  Categories  -->
@@ -114,7 +114,8 @@
         
         <!-- Post Main Content -->
         <div class="post-content">
-          <h2 id="Kafka-a-本身的架构"><a href="#Kafka-a-本身的架构" class="headerlink" title="Kafka a 本身的架构"></a>Kafka a 本身的架构</h2><p>一个典型的 kafka 集群包含若干 Producer，若干个 Broker（kafka 支持水平扩展）、若干个 Consumer<br>Group，以及一个 zookeeper 集群。kafka 通过 zookeeper 管理集群配置及服务协同。Producer 使用 push 模式将消息发布到 broker，consumer 通过监听使用 pull 模式从broker 订阅并消费消息。多个 broker 协同工作，producer 和 consumer 部署在各个业务逻辑中。三者通过zookeeper管理协调请求和转发。这样就组成了一个高性能的分布式消息发布和订阅系统。producer 发送消息到 broker的过程是 push，而 consumer 从 broker 消费消息的过程是 pull，主动去拉数据。而不是 broker 把数据主动发送给 consumer。</p>
+          <h2 id="Kafka-本身的架构"><a href="#Kafka-本身的架构" class="headerlink" title="Kafka 本身的架构"></a>Kafka 本身的架构</h2><p>一个典型的 kafka 集群包含若干 Producer，若干个 Broker（kafka 支持水平扩展）、若干个 Consumer<br>Group，以及一个 zookeeper 集群。kafka 通过 zookeeper 管理集群配置及服务协同。Producer 使用 push 模式将消息发布到 broker，consumer 通过监听使用 pull 模式从broker 订阅并消费消息。多个 broker 协同工作，producer 和 consumer 部署在各个业务逻辑中。三者通过zookeeper管理协调请求和转发。这样就组成了一个高性能的分布式消息发布和订阅系统。producer 发送消息到 broker的过程是 push，而 consumer 从 broker 消费消息的过程是 pull，主动去拉数据。而不是 broker 把数据主动发送给 consumer。</p>
+<a id="more"></a>
 <h2 id="关于-Topic-和-Partition"><a href="#关于-Topic-和-Partition" class="headerlink" title="关于 Topic 和 Partition"></a>关于 Topic 和 Partition</h2><h3 id="Topic"><a href="#Topic" class="headerlink" title="Topic"></a>Topic</h3><p>在 kafka 中，topic 是一个存储消息的逻辑概念，可以认为是一个消息集合。每条消息发送到 kafka 集群的消息都有一个类别。物理上来说，不同的 topic 的消息是分开存储的，每个 topic 可以有多个生产者向它发送消息，也可以有多个消费者去消费其中的消息。</p>
 <h3 id="Partition"><a href="#Partition" class="headerlink" title="Partition"></a>Partition</h3><p>每个 topic 可以划分多个分区（每个 Topic 至少有一个分区），同一 topic 下的不同分区包含的消息是不同的。每个消息在被添加到分区时，都会被分配一个 offset（称之为偏移量），它是消息在此分区中的唯一编号，kafka 通过 offset保证消息在分区内的顺序，offset的顺序不跨分区，即kafka只保证在同一个分区内的消息是有序的。</p>
 <p>每一条消息发送到 broker 时，会根据 partition 的规则选择存储到哪一个 partition。如果 partition 规则设置合理，那么所有的消息会均匀的分布在不同的partition中，这样就有点类似数据库的分库分表的概念，把数据做了分片处理。</p>

@@ -103,7 +103,7 @@
       </div>
     </div>
     <!-- Post Excerpt -->
-    <div class="excerpt typo">暂无文章摘要</div>
+    <div class="excerpt typo"><h2 id="Kafka-本身的架构"><a href="#Kafka-本身的架构" class="headerlink" title="Kafka 本身的架构"></a>Kafka 本身的架构</h2><p>一个典型的 kafka 集群包含若干 Producer，若干个 Broker（kafka 支持水平扩展）、若干个 Consumer<br>Group，以及一个 zookeeper 集群。kafka 通过 zookeeper 管理集群配置及服务协同。Producer 使用 push 模式将消息发布到 broker，consumer 通过监听使用 pull 模式从broker 订阅并消费消息。多个 broker 协同工作，producer 和 consumer 部署在各个业务逻辑中。三者通过zookeeper管理协调请求和转发。这样就组成了一个高性能的分布式消息发布和订阅系统。producer 发送消息到 broker的过程是 push，而 consumer 从 broker 消费消息的过程是 pull，主动去拉数据。而不是 broker 把数据主动发送给 consumer。</p></div>
     <!-- Post Tags -->
     <div class="tags">
       

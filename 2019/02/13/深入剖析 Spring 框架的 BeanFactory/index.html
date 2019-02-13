@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+  <!-- Html Head Tag-->
+  <head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="YogaCheng">
+  <!-- Open Graph Data -->
+  <meta property="og:title" content="Spring 框架的 BeanFactory"/>
+  <meta property="og:description" content="" />
+  <meta property="og:site_name" content="Yoga&#39;s Blog"/>
+  <meta property="og:type" content="article" />
+  <meta property="og:image" content="http://yoursite.com"/>
+  
+    <link rel="alternate" href="/atom.xml" title="Yoga&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+
+  <!-- Site Title -->
+  <title>Yoga's Blog</title>
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <!-- Custom CSS -->
+  
+  <link rel="stylesheet" href="/css/style.light.css">
+
+  <!-- Google Analytics -->
+  
+
+</head>
+
+  <body>
+    <!-- Page Header -->
+
+
+<header class="site-header header-background" style="background-image: url(/img/default-banner-dark.jpg)">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="page-title with-background-image">
+          <p class="title">Spring 框架的 BeanFactory</p>
+          <p class="subtitle"></p>
+        </div>
+        <div class="site-menu with-background-image">
+          <ul>
+            
+              <li>
+                <a href="/">
+                  
+                  Home
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="/archives">
+                  
+                  Archives
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="/522676621@qq.com">
+                  
+                  Email
+                  
+                </a>
+              </li>
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<article>
+  <div class="container typo">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-info text-muted">
+          
+            <!-- Author -->
+            <span class="author info">By YogaCheng</span>
+          
+          <!-- Date -->
+          <span class="date-time info">On
+            <span class="date">2019-02-13</span>
+            <span class="time">23:53:47</span>
+          </span>
+          
+          <!--  Categories  -->
+            <span class="categories info">Under 
+
+<a href="/categories/Spring/">Spring</a>
+</span>
+          
+        </div>
+        <!-- Tags -->
+        
+          <div class="post-tags text-muted">
+            Tags: 
+
+<a class="tag" href="/tags/Spring/">#Spring</a>
+
+
+          </div>
+        
+        <!-- Post Main Content -->
+        <div class="post-content">
+          <blockquote>
+<p>2019年下定决心好好学习Spring，于是开始Spring的学习计划</p>
+</blockquote>
+<hr>
+<blockquote>
+<p>在没有spring这个beanFactory之前，我们都是直接通过new来实例化各种对象，现在各种对象bean的生产都是通过beanFactory来实例化的，这样的话，spring这个beanFactory就可以在实例化bean的过程中，做一些小动作——在实例化bean的各个阶段进行一些额外的处理，也就是说beanFactory会在bean的生命周期的各个阶段中对bean进行各种管理，并且spring将这些阶段通过各种接口暴露给我们，让我们可以对bean进行各种处理，我们只要让bean实现对应的接口，那么spring就会在bean的生命周期调用我们实现的接口来处理该bean。</p>
+</blockquote>
+<p><strong>Spring中Bean容器的启动分为两个阶段：</strong></p>
+<ol>
+<li>bean容器的启动阶段</li>
+<li>容器中bean的实例化阶段</li>
+</ol>
+<h3 id="bean容器的启动阶段"><a href="#bean容器的启动阶段" class="headerlink" title="bean容器的启动阶段"></a>bean容器的启动阶段</h3><p>​    1.首先是读取bean的xml配置文件，然后解析xml文件中的各种bean的定义，将xml文件中的每一个<strong><bean></bean></strong>元素分别转换成一个BeanDefinition对象，其中保存了从配置文件中读取到的该bean的各种信息</p>
+<p>​    2.然后通过BeanDefinitionRegistry将这些bean注册到beanFactory中</p>
+<p>​    3.BeanDefinition被注册到了 DefaultListableBeanFactory后， 会把它保存到beanDefinitionMap中</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> Map&lt;String, BeanDefinition&gt; beanDefinitionMap = <span class="keyword">new</span> ConcurrentHashMap&lt;&gt;(<span class="number">256</span>);</span><br></pre></td></tr></table></figure>
+<p>​    4.将BeanDefinition注册到了beanFactory之后，在这里Spring为我们提供了一个扩展的切口，允许我们通过实现接口BeanFactoryPostProcessor 在此处来插入我们定义的代码，也就是前置处理器。</p>
+<p>​    </p>
+<h3 id="bean的实例化阶段"><a href="#bean的实例化阶段" class="headerlink" title="bean的实例化阶段"></a>bean的实例化阶段</h3><p>​    1.实例化阶段主要是通过反射或者CGLIB对bean进行实例化</p>
+<p>​    2.Spring容器会检查当前对象实例是否实现了一系列的以 Aware 命名结尾的接口定义。如果是，则将这些 Aware 接口定义中规定的依赖注入给当前对象实例</p>
+<p>​    3.如果实现了BeanPostProcessor接口的bean，在实例化bean时Spring会帮我们调用接口中的方法，其中postProcessBeforeInitialization方法在 InitializingBean接口的 afterPropertiesSet方法之前执行，而postProcessAfterInitialization方法在 InitializingBean接口的afterPropertiesSet方法之后执行</p>
+<p>​    4.如果实现了InitializingBean接口的bean，在实例化bean时Spring会帮我们调用afterPropertiesSet方法</p>
+<p>​    5.如果实现了BeanPostProcessor接口的bean，在该bean死亡时Spring会帮我们调用destroy方法</p>
+<p>​    InitializingBean接口 和 DisposableBean接口对应于 <bean> 的 init-method 和 destory-method 属性，</bean></p>
+<p>​    另外注解 @PostConstruct 和 @PreDestroy 也能达到 InitializingBean接口 和 DisposableBean接口的效果</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>spring容器接管了bean的实例化，不仅仅是通过依赖注入达到了松耦合的效果，同时给我们提供了各种的扩展接口，来在bean的生命周期的各个时期插入我们自己的代码：</p>
+<p><strong>0）</strong>BeanFactoryPostProcessor接口(在容器启动阶段)</p>
+<p><strong>1）</strong>各种的Aware接口</p>
+<p><strong>2）</strong>BeanPostProcessor接口</p>
+<p><strong>3）</strong>InitializingBean接口(@PostConstruct， init-method)</p>
+<p><strong>4）</strong>DisposableBean接口(@PreDestroy, destory-method)</p>
+<p>​    </p>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</article>
+
+
+
+    <!-- Footer -->
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <p class="copyright text-muted">
+          Theme By <a target="_blank" href="https://github.com/levblanc">Levblanc.</a>
+          Inspired By <a target="_blank" href="https://github.com/klugjo/hexo-theme-clean-blog">Clean Blog.</a>
+        <p class="copyright text-muted">
+          Powered By <a target="_blank" href="https://hexo.io/">Hexo.</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+    <!-- After Footer Scripts -->
+<script src="/js/highlight.pack.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function(event) {
+    var codeBlocks = Array.prototype.slice.call(document.getElementsByTagName('pre'))
+    codeBlocks.forEach(function(block, index) {
+      hljs.highlightBlock(block);
+    });
+  });
+</script>
+
+  </body>
+</html>
+
